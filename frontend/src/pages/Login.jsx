@@ -16,10 +16,9 @@ function Login() {
 
     try {
       await login(formData);
-      alert('user logged in');
-      navigate('/Home');
+      alert('Login Successful');
     } catch (error) {
-      console.log('login failed');
+      console.log(error.message || 'login failed');
     }
   }
 

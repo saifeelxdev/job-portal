@@ -8,6 +8,7 @@ const {
   findUserByEmail,
   createRecruiter,
 } = require("../models/user.model");
+const { findRecruiterByEmail } = require("../models/recruiter.model");
 
 const registerUser = async ({ name, email, password, role }) => {
   if (!name || !email || !password) {
@@ -66,23 +67,34 @@ const loginUser = async ({ email, password }) => {
     throw new AppError("Invalid email or password", 401);
   }
 
-  const token = jwt.sign(
-    {
-      sub: user.id,
-      role: user.role,
-    },
-    process.env.JWT_SECRET,
-    { expiresIn: "1d" },
-  );
+  const recruiter = await findRecruiterByEmail(email);
 
+  const role = recruiter ? "recruiter" : "candidate";
+
+  const payload = {
+    sub: user.id,
+    role,
+  };
+
+  if (role === "recruiter") {
+    payload.recruiterId = recruiter.id;
+  }
+
+  const token = jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: "1d" });
+
+  const responseUser = {
+    id: user.id,
+    name: user.name,
+    email: user.email,
+    role,
+  };
+
+  if (role === "recruiter") {
+    responseUser.recruiterId = recruiter.id;
+  }
   return {
     token,
-    user: {
-      id: user.id,
-      name: user.name,
-      email: user.email,
-      role: user.role,
-    },
+    user: responseUser,
   };
 };
 

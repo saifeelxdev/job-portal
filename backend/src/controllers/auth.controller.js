@@ -4,7 +4,6 @@ const {
   registerRecruiter,
   loginUser,
 } = require("../services/auth.service");
-const { createRecruiter } = require("../models/user.model");
 
 const registerController = asyncHandler(async (req, res) => {
   console.log(req.body);
