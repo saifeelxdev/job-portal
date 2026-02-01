@@ -4,7 +4,8 @@ import Register from './pages/Register';
 import Home from './pages/Home';
 import Recruiter from './pages/Recruiter';
 import Candidate from './pages/Candidate';
-
+import ProtectedRoutes from './components/ProtectedRoutes';
+import Unauthorized from './pages/Unauthorized';
 function App() {
   return (
     <>
@@ -14,8 +15,23 @@ function App() {
           <Route path="/register" element={<Register />} />
           <Route path="/login" element={<Login />} />
           <Route path="/home" element={<Home />}></Route>
-          <Route path="/recruiter" element={<Recruiter />}></Route>
-          <Route path="/candidate" element={<Candidate />}></Route>
+          <Route
+            path="/recruiter"
+            element={
+              <ProtectedRoutes allowedRoles={['recruiter']}>
+                <Recruiter />
+              </ProtectedRoutes>
+            }
+          ></Route>
+          <Route
+            path="/candidate"
+            element={
+              <ProtectedRoutes allowedRoles={['candidate']}>
+                <Candidate />
+              </ProtectedRoutes>
+            }
+          ></Route>
+          <Route path="/unauthorized" element={<Unauthorized />}></Route>
         </Routes>
       </BrowserRouter>
     </>
