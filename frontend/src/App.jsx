@@ -7,12 +7,14 @@ import Candidate from './pages/Candidate';
 import ProtectedRoutes from './components/ProtectedRoutes';
 import Unauthorized from './pages/Unauthorized';
 import CreateJob from './pages/Recruiter/CreateJob';
+import Jobs from './pages/Candidate/Jobs';
 
 function App() {
   return (
     <>
       <BrowserRouter>
         <Routes>
+          <Route path="/jobs" element={<Jobs />}></Route>
           <Route path="/register" element={<Register />} />
           <Route path="/login" element={<Login />} />
           <Route path="/home" element={<Home />}></Route>
